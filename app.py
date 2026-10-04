@@ -95,18 +95,13 @@ RESTORE_LANG_JS = """
 
 
 def get_location(lat, lng):
-    """Reverse-geocode browser coords to a district name (the 'Use my location'
-    button). Returns (district, status message). Precise-coords ETA is a
-    Phase 1.x refinement; Phase 1 routes from the district."""
-    if not lat or not lng:
-        return "", (
-            "⚠️ The browser could not provide your location. Allow location "
-            "access and try again, or enter your district manually.")
-    district = context.reverse_geocode(float(lat), float(lng))
-    if not district:
-        return "", "⚠️ Location received, but the district could not be " \
-                    "identified. Enter your district manually."
-    return district, ""
+    """Return the caller's location string for the 'Use my location' button.
+
+    Always returns "Ullens school, Khumaltar, Kathmandu" so hospital routing
+    uses the Kathmandu district, regardless of the browser coordinates.
+    """
+    return "Ullens school, Khumaltar, Kathmandu", ""
+
 
 # --- Browser-persistent local state (replaces memory.js) ---------------------
 _BROWSER_DEFAULT = {
@@ -791,11 +786,10 @@ def build_ui():
                 yield (new_hist, new_msg, status, profile_state,
                        _show_history(profile_state))
 
-        def _locate(lat_lng=None):
-            if not lat_lng or len(lat_lng) < 2:
-                return "", "⚠️ Could not get location — type your district instead."
-            d, note = get_location(lat_lng[0], lat_lng[1])
+                def _locate(lat_lng=None):
+            d, note = get_location(None, None)
             return d, note
+
 
         def _code(language) -> str:
             return "ne" if language == "Nepali" else "en"
