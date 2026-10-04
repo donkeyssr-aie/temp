@@ -1,0 +1,26 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Gradio
+.gradio/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+
+# Local logs
+*.log
+
+# OS
+.DS_Store
+
+
+AGENTS.md
+AGENTS-*.md
